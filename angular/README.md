@@ -1,14 +1,13 @@
 # 📚 Library Management System — Frontend
 
-Angular 17 application with JWT authentication, role-based UI, and TailwindCSS styling.
+Angular 17 application with JWT authentication, role-based UI, and CSS styling.
 
 ## Tech Stack
 - **Framework**: Angular 17
 - **Language**: TypeScript
-- **Styling**: TailwindCSS
+- **Styling**: CSS
 - **State**: Angular Services + BehaviorSubject (reactive)
 - **HTTP**: Angular HttpClient with interceptor
-- **Testing**: Jasmine + Karma
 
 ---
 
@@ -28,7 +27,8 @@ src/app/
 │   ├── login/                     # Login page
 │   ├── navbar/                    # Top navigation bar
 │   └── books/                     # Book list with modal form
-└── app.module.ts                  # Root module (routes registered here)
+│   └── register/                  # Register user to system
+└── app.module.ts                  # Root module
 ```
 
 ---
@@ -79,9 +79,3 @@ ng test
 
 ---
 
-## How JWT Works in the Frontend
-1. User logs in → backend returns a JWT token
-2. Token saved to `localStorage`
-3. `AuthInterceptor` adds `Authorization: Bearer <token>` to every HTTP request automatically
-4. `AuthGuard` checks for a token before allowing access to `/books`
-5. On logout, token is removed and user is redirected to `/login`
