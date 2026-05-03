@@ -1,0 +1,19 @@
+<nav class="navbar">
+
+  <div class="left">
+    <span class="logo">Library</span>
+
+    <span *ngIf="currentUser" [class]="currentUser.role === 'admin' ? 'role admin' : 'role user'">
+      {{ currentUser.role | uppercase }}
+    </span>
+  </div>
+
+  <div class="right" *ngIf="currentUser">
+    <span class="hello">
+      Hello, <strong>{{ currentUser.username }}</strong>
+    </span>
+
+    <button (click)="logout()">Logout</button>
+  </div>
+
+</nav>

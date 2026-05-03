@@ -1,0 +1,118 @@
+<div class="page">
+
+  <div class="header">
+    <h2>Book Catalog</h2>
+
+    <button *ngIf="authService.isAdmin()" (click)="openAddModal()">
+      + Add Book
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div *ngIf="successMessage" class="success">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    Loading books...
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!isLoading" class="table-container">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Year</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let book of books">
+          <td class="bold">{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.published_year }}</td>
+
+          <td>
+            <span [class]="book.status === 'available' ? 'badge available' : 'badge borrowed'">
+              {{ book.status | titlecase }}
+            </span>
+          </td>
+
+          <td class="actions">
+
+            <button (click)="toggleStatus(book)" [class]="book.status === 'available' ? 'btn borrow' : 'btn return'">
+              {{ book.status === 'available' ? 'Borrow' : 'Return' }}
+            </button>
+
+            <ng-container *ngIf="authService.isAdmin()">
+              <button (click)="openEditModal(book)" class="btn edit">
+                Edit
+              </button>
+
+              <button (click)="deleteBook(book.id)" class="btn delete">
+                Delete
+              </button>
+            </ng-container>
+
+          </td>
+        </tr>
+
+        <tr *ngIf="books.length === 0">
+          <td colspan="5" class="empty">
+            No books found.
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div *ngIf="showModal" class="modal-overlay">
+
+  <div class="modal">
+
+    <h3>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h3>
+
+    <div *ngIf="formError" class="form-error">
+      {{ formError }}
+    </div>
+
+    <div class="form-group">
+      <label>Title</label>
+      <input type="text" [(ngModel)]="formTitle" placeholder="Book title" />
+    </div>
+
+    <div class="form-group">
+      <label>Author</label>
+      <input type="text" [(ngModel)]="formAuthor" placeholder="Author name" />
+    </div>
+
+    <div class="form-group">
+      <label>Published Year</label>
+      <input type="number" [(ngModel)]="formYear" placeholder="e.g. 2023" />
+    </div>
+
+    <div class="modal-actions">
+      <button (click)="closeModal()" class="btn cancel">Cancel</button>
+      <button (click)="saveBook()" class="btn primary">
+        {{ isEditMode ? 'Update' : 'Add Book' }}
+      </button>
+    </div>
+
+  </div>
+
+</div>
